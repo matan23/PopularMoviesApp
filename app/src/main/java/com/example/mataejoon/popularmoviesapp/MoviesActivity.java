@@ -4,32 +4,29 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.util.List;
+import android.widget.GridView;
 
 
 public class MoviesActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String>    mMoviesAdapter;
-    private ListView                mListView;
+    private ImageAdapter    mMoviesAdapter;
+    private GridView        mGridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
 
-        fetchView();
-        setupListView();
+        fetchViews();
+        setupGridView();
     }
 
-    private void fetchView() {
-        mListView = (ListView)findViewById(R.id.movies_listview);
+    private void fetchViews() {
+        mGridView = (GridView)findViewById(R.id.movies_gridview);
     }
 
-    private void setupListView() {
-        mListView.setAdapter(getAdapter());
+    private void setupGridView() {
+        mGridView.setAdapter(getAdapter());
     }
 
     @Override
@@ -54,24 +51,8 @@ public class MoviesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private ArrayAdapter<String> getAdapter() {
-        mMoviesAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                fetchDatas()
-        );
-
+    private ImageAdapter getAdapter() {
+        mMoviesAdapter = new ImageAdapter(this);
         return mMoviesAdapter;
-    }
-
-    private String[] fetchDatas() {
-        String [] datas = {
-                "Jurasic Park",
-                "Very Bad Trip",
-                "Forest Gump",
-                "Whatever :)"
-        };
-
-        return datas;
     }
 }
