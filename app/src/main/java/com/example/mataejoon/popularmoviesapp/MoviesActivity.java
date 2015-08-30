@@ -1,10 +1,15 @@
 package com.example.mataejoon.popularmoviesapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 
 public class MoviesActivity extends AppCompatActivity {
@@ -18,6 +23,7 @@ public class MoviesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movies);
 
         fetchViews();
+        fetchDatas();
         setupGridView();
     }
 
@@ -25,8 +31,31 @@ public class MoviesActivity extends AppCompatActivity {
         mGridView = (GridView)findViewById(R.id.movies_gridview);
     }
 
+    private void fetchDatas() {
+        MovieStore.getInstance();
+    }
+
     private void setupGridView() {
         mGridView.setAdapter(getAdapter());
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+
+                Movie movie = getMovieAtGridViewPosition(position);
+                navigateToDetailActivity(movie);
+            }
+        });
+    }
+
+    private Movie getMovieAtGridViewPosition(int position) {
+        return MovieStore.getInstance().getMovieWithID(position);
+    }
+
+    private void navigateToDetailActivity(Movie movie) {
+        Intent intent = new Intent(MoviesActivity.this, MovieActivity.class);
+//        intent.putExtra((Parcelable) movie);
+        startActivity(intent);
     }
 
     @Override
